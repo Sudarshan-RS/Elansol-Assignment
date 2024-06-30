@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 
 
@@ -28,35 +29,29 @@ export const Login = () => {
   };
   
   // Handling form submit
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await fetch(URL,{
-        method:"POST",
-        headers:{
-          'Content-Type':'application/json'
-          },
-          body:JSON.stringify(user),
-
-      });
-
-      const res_data = await response.json();
-      console.log('res form server', res_data);
-      if ((response.ok)) {
-        // localStorage.setItem('token', res_data.token)
-        storeTokenInLS(res_data.token)
+      const response = await axios.post(URL, user);
+  
+      const res_data = response.data;
+      console.log('Response from server', res_data);
+  
+      if (response.status === 200) {
+        storeTokenInLS(res_data.token);
         setUser({ email: "", password: "" });
-        console.log('token',res_data.token);
-        toast.success("Login successful")
+        console.log('token', res_data.token);
+        toast.success("Login successful");
         navigate("/home");
-      }else{
+      } else {
         toast.error(res_data.extraDetails ? res_data.extraDetails : res_data.message);
       }
     } catch (error) {
-      console.log("login", error)
+      console.log("Login error", error);
     }
   };
+  
 
   return (
     <>

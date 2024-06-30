@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../store/auth";
 import { NavLink } from "react-router-dom";
+import axios from "axios"
 
 // import axios from 'axios';
 // import {Link}  from "react-router-dom";
@@ -12,13 +13,14 @@ export const Home = () => {
   // getAllUsersData();
   const getAllUsersData = async () => {
     try {
-      const response = await fetch(`${API}/api/admin/users`, {
+      const response = await axios( {
         method: "GET",
+        url:`${API}/api/admin/users`,
         headers: {
           Authorization: authorizationToken,
         },
       });
-      const data = await response.json();
+      const data = await response.data;
       setUsers(data);
       console.log(data, "home data");
     } catch (error) {

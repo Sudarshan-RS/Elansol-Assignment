@@ -39,7 +39,7 @@ export const Home = () => {
         <table>
           <thead>
             <tr>
-              <th>name</th>
+              <th>Name</th>
               <th>Email</th>
               <th>Date of Birth</th>
             </tr>
